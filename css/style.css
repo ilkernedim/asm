@@ -481,20 +481,25 @@ input, select, textarea { font-size: 16px; }
   /* Floating call button visible on mobile */
   .floating-call { display: flex; }
 
-  /* Mobile menu: dropdown style with smooth animation */
+  /* Mobile menu: full-screen overlay with internal scroll */
   .nav-list {
-    position: absolute;
-    top: 100%;
+    display: none;
+    position: fixed;
+    top: 52px;
     left: 0;
     right: 0;
-    max-height: calc(100vh - 60px);
+    bottom: 0;
+    margin: 0;
+    padding: 8px 0 80px;
+    background: var(--primary-dark);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    z-index: 49;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   }
-
-  /* Avoid floating button overlapping page content */
-  body { padding-bottom: 0; }
+  .nav-list.open { display: block; }
+  .nav-list > li { display: block; width: 100%; }
 }
 
 /* Phones (<= 600px) */
