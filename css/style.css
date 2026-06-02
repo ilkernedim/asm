@@ -48,7 +48,13 @@ img { max-width: 100%; height: auto; display: block; }
 .topbar-contact strong { display: block; font-size: 15px; color: var(--text); }
 
 /* Header / Menu */
-.header { background: var(--primary); }
+.header {
+  background: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
 .nav { display: flex; align-items: center; }
 .nav-list { list-style: none; display: flex; flex-wrap: wrap; width: 100%; }
 .nav-list > li { position: relative; }
@@ -323,6 +329,57 @@ img { max-width: 100%; height: auto; display: block; }
 .sidebar li a::before { content: '›'; color: var(--primary); margin-right: 8px; font-weight: 700; }
 .sidebar li a:hover { color: var(--primary); padding-left: 4px; }
 
+/* Floating call button (mobile only) */
+.floating-call {
+  display: none;
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  right: 16px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  z-index: 80;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.floating-call:hover, .floating-call:active, .floating-call:focus {
+  color: #fff;
+  transform: scale(1.06);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+.floating-call::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  opacity: 0;
+  animation: callPulse 2.2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes callPulse {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Mobile menu backdrop */
+.menu-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 40;
+  animation: fadeIn 0.2s ease;
+}
+.menu-backdrop.show { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
 /* Footer */
 .footer { background: #1f2d3d; color: #cdd6e4; padding: 50px 0 0; }
 .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 36px; }
@@ -420,6 +477,24 @@ input, select, textarea { font-size: 16px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
   .footer h5 { margin-bottom: 14px; font-size: 14px; }
   .footer-bottom { margin-top: 28px; padding: 16px 0; font-size: 12px; }
+
+  /* Floating call button visible on mobile */
+  .floating-call { display: flex; }
+
+  /* Mobile menu: dropdown style with smooth animation */
+  .nav-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Avoid floating button overlapping page content */
+  body { padding-bottom: 0; }
 }
 
 /* Phones (<= 600px) */

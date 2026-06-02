@@ -133,12 +133,60 @@
   if (headerHolder) headerHolder.innerHTML = topbar + header;
   if (footerHolder) footerHolder.innerHTML = footer;
 
-  // Mobile toggle
+  // Inject floating call button and menu backdrop into body
+  if (!document.querySelector('.floating-call')) {
+    var fc = document.createElement('a');
+    fc.className = 'floating-call';
+    fc.href = 'tel:+903125141710';
+    fc.setAttribute('aria-label', 'Bizi arayın: 0312 514 17 10');
+    fc.innerHTML = '<span style="position:relative;z-index:1;">☎</span>';
+    document.body.appendChild(fc);
+  }
+  if (!document.querySelector('.menu-backdrop')) {
+    var bd = document.createElement('div');
+    bd.className = 'menu-backdrop';
+    document.body.appendChild(bd);
+  }
+
+  // Mobile menu behavior
   var toggle = document.querySelector('.mobile-toggle');
   var navList = document.querySelector('.nav-list');
-  if (toggle && navList) {
-    toggle.addEventListener('click', function () { navList.classList.toggle('open'); });
+  var backdrop = document.querySelector('.menu-backdrop');
+
+  function closeMenu() {
+    if (!navList) return;
+    navList.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('show');
+    document.body.style.overflow = '';
   }
+  function openMenu() {
+    if (!navList) return;
+    navList.classList.add('open');
+    if (backdrop) backdrop.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  if (toggle && navList) {
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (navList.classList.contains('open')) closeMenu(); else openMenu();
+    });
+  }
+  if (backdrop) backdrop.addEventListener('click', closeMenu);
+
+  // Close menu when a real link is clicked (not the parent dropdown toggle)
+  if (navList) {
+    navList.querySelectorAll('a').forEach(function (a) {
+      if (a.getAttribute('href') === '#') return;
+      a.addEventListener('click', closeMenu);
+    });
+  }
+
+  // Close menu on resize to desktop
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 880) closeMenu();
+  });
+
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 })();
