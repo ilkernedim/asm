@@ -271,6 +271,72 @@ img { max-width: 100%; height: auto; display: block; }
 .doctor-body .title { color: var(--muted); font-size: 14px; }
 .doctor-meta { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
 
+/* ASM Rehberi cards */
+.rehber-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+.rehber-card {
+  display: block;
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.rehber-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  color: inherit;
+}
+.rehber-card-img {
+  height: 160px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 60px;
+  position: relative;
+}
+.rehber-card-body {
+  padding: 18px;
+  text-align: center;
+  position: relative;
+}
+.rehber-card-body h4 {
+  color: var(--primary-dark);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  transition: color 0.18s;
+}
+.rehber-card .rehber-link {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 8px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.18s, transform 0.18s;
+  letter-spacing: 0.2px;
+}
+.rehber-card:hover .rehber-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+.rehber-card:hover .rehber-card-body h4 { color: var(--primary); }
+
+/* On touch devices, always show link (no hover) */
+@media (hover: none) {
+  .rehber-card .rehber-link { opacity: 1; transform: none; }
+}
+
 /* Staff group subheadings on Kadromuz section */
 .staff-group-title {
   text-align: center;
