@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yetişkin Beden Kitle İndeksi | Zerdalitepe ASM</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .calc { background: var(--bg-alt); padding: 28px; border-radius: 8px; border: 1px solid var(--border); max-width: 520px; }
+  .calc label { display: block; font-weight: 600; margin: 12px 0 6px; color: var(--text); font-size: 14px; }
+  .calc input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 15px; }
+  .calc button { margin-top: 18px; background: var(--primary); color: #fff; border: none; padding: 12px 24px; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; }
+  .calc button:hover { background: var(--primary-dark); }
+  .result { margin-top: 22px; padding: 18px; background: #fff; border-radius: 6px; border: 1px solid var(--border); display: none; }
+  .result.show { display: block; }
+  .result .val { font-size: 32px; font-weight: 700; color: var(--primary-dark); }
+  .result .cat { display: inline-block; margin-top: 6px; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; color: #fff; }
+</style>
+</head>
+<body data-active="saglik">
+
+<div id="site-header"></div>
+
+<div class="page-header">
+  <div class="container">
+    <h2>Yetişkin Beden Kitle İndeksi (BKİ)</h2>
+    <div class="breadcrumb"><a href="index.html">Ana Sayfa</a> &rsaquo; Sağlık Üzerine &rsaquo; Yetişkin BKİ</div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container">
+    <p>Beden Kitle İndeksi (BKİ), yetişkin bireylerde boy ve kiloya göre vücut ağırlığının değerlendirildiği bir ölçüm yöntemidir. Formül: <strong>BKİ = Kilo (kg) / Boy² (m)</strong></p>
+
+    <div class="calc">
+      <label for="weight">Kilo (kg)</label>
+      <input id="weight" type="number" min="20" max="300" step="0.1" placeholder="örn. 70">
+
+      <label for="height">Boy (cm)</label>
+      <input id="height" type="number" min="100" max="250" step="0.5" placeholder="örn. 170">
+
+      <button onclick="calculateBMI()">Hesapla</button>
+
+      <div id="result" class="result">
+        <div>BKİ Değeriniz:</div>
+        <div class="val" id="bmiValue">—</div>
+        <span class="cat" id="bmiCategory">—</span>
+        <p style="margin-top: 14px; font-size: 14px; color: var(--muted);" id="bmiAdvice"></p>
+      </div>
+    </div>
+
+    <h3>Değerlendirme Aralıkları (DSÖ)</h3>
+    <table>
+      <thead>
+        <tr><th>BKİ Aralığı</th><th>Sınıflandırma</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>18.5'in altı</td><td>Zayıf (düşük kilolu)</td></tr>
+        <tr><td>18.5 - 24.9</td><td>Normal kilolu</td></tr>
+        <tr><td>25.0 - 29.9</td><td>Fazla kilolu</td></tr>
+        <tr><td>30.0 - 34.9</td><td>1. Derece Obez</td></tr>
+        <tr><td>35.0 - 39.9</td><td>2. Derece Obez</td></tr>
+        <tr><td>40.0 ve üzeri</td><td>3. Derece (Morbid) Obez</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 18px; font-size: 14px; color: var(--muted);"><em>Not: BKİ değeri tek başına sağlık durumu hakkında kesin bilgi vermez. Kas kütlesi yüksek olan kişilerde yanıltıcı sonuçlar verebilir. Sağlık durumunuzun değerlendirilmesi için aile hekiminize başvurunuz.</em></p>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+<script src="js/partials.js"></script>
+<script>
+function calculateBMI() {
+  var w = parseFloat(document.getElementById('weight').value);
+  var h = parseFloat(document.getElementById('height').value);
+  if (!w || !h || h < 50) {
+    alert('Lütfen geçerli bir kilo ve boy değeri giriniz.');
+    return;
+  }
+  var bmi = w / Math.pow(h / 100, 2);
+  var category, color, advice;
+  if (bmi < 18.5) { category = 'Zayıf'; color = '#3498db'; advice = 'Kilo almanız önerilebilir. Dengeli beslenme için aile hekiminize danışınız.'; }
+  else if (bmi < 25) { category = 'Normal'; color = '#27ae60'; advice = 'Tebrikler! Sağlıklı kilo aralığındasınız. Düzenli beslenme ve egzersize devam ediniz.'; }
+  else if (bmi < 30) { category = 'Fazla Kilolu'; color = '#f39c12'; advice = 'Kilo vermeniz tavsiye edilir. Beslenme ve egzersiz alışkanlıklarınızı gözden geçiriniz.'; }
+  else if (bmi < 35) { category = '1. Derece Obez'; color = '#e67e22'; advice = 'Sağlığınız için kilo vermeniz önemlidir. Hekiminize danışınız.'; }
+  else if (bmi < 40) { category = '2. Derece Obez'; color = '#d35400'; advice = 'Kilo verme programı için mutlaka uzman desteği alınız.'; }
+  else { category = 'Morbid Obez'; color = '#c0392b'; advice = 'Acilen sağlık kuruluşuna başvurunuz.'; }
+  document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+  var catEl = document.getElementById('bmiCategory');
+  catEl.textContent = category;
+  catEl.style.background = color;
+  document.getElementById('bmiAdvice').textContent = advice;
+  document.getElementById('result').classList.add('show');
+}
+</script>
+</body>
+</html>
