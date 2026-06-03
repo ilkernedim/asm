@@ -23,11 +23,67 @@
 
 <div class="content">
   <div class="container">
-    <p style="color: var(--muted); padding: 24px; background: var(--bg-alt); border-radius: 6px;">Galeri içeriği yakında eklenecektir.</p>
+    <div class="gallery-grid">
+      <a class="gallery-item" href="images/IMG_9817.JPG"><img src="images/IMG_9817.JPG" alt="Zerdalitepe ASM Galeri 1" loading="lazy"></a>
+      <a class="gallery-item" href="images/IMG_9818.JPG"><img src="images/IMG_9818.JPG" alt="Zerdalitepe ASM Galeri 2" loading="lazy"></a>
+      <a class="gallery-item" href="images/IMG_9820.JPG"><img src="images/IMG_9820.JPG" alt="Zerdalitepe ASM Galeri 3" loading="lazy"></a>
+      <a class="gallery-item" href="images/IMG_9821.JPG"><img src="images/IMG_9821.JPG" alt="Zerdalitepe ASM Galeri 4" loading="lazy"></a>
+      <a class="gallery-item" href="images/IMG_9822.JPG"><img src="images/IMG_9822.JPG" alt="Zerdalitepe ASM Galeri 5" loading="lazy"></a>
+      <a class="gallery-item" href="images/IMG_9823.JPG"><img src="images/IMG_9823.JPG" alt="Zerdalitepe ASM Galeri 6" loading="lazy"></a>
+      <a class="gallery-item" href="images/IMG_9824.JPG"><img src="images/IMG_9824.JPG" alt="Zerdalitepe ASM Galeri 7" loading="lazy"></a>
+      <a class="gallery-item" href="images/IMG_9825.JPG"><img src="images/IMG_9825.JPG" alt="Zerdalitepe ASM Galeri 8" loading="lazy"></a>
+      <a class="gallery-item" href="images/IMG_9826.JPG"><img src="images/IMG_9826.JPG" alt="Zerdalitepe ASM Galeri 9" loading="lazy"></a>
+    </div>
   </div>
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lb-close" aria-label="Kapat">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lb-prev" aria-label="Önceki">&lsaquo;</button>
+  <img class="lightbox-img" id="lb-img" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lb-next" aria-label="Sonraki">&rsaquo;</button>
 </div>
 
 <div id="site-footer"></div>
 <script src="js/partials.js"></script>
+<script>
+(function () {
+  var items = Array.prototype.slice.call(document.querySelectorAll('.gallery-item'));
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var current = 0;
+
+  function show(i) {
+    current = (i + items.length) % items.length;
+    lbImg.src = items[current].getAttribute('href');
+    lbImg.alt = items[current].querySelector('img').alt;
+  }
+  function open(i) {
+    show(i);
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  items.forEach(function (el, i) {
+    el.addEventListener('click', function (e) { e.preventDefault(); open(i); });
+  });
+  document.getElementById('lb-close').addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', function (e) { e.stopPropagation(); show(current - 1); });
+  document.getElementById('lb-next').addEventListener('click', function (e) { e.stopPropagation(); show(current + 1); });
+  lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(current - 1);
+    else if (e.key === 'ArrowRight') show(current + 1);
+  });
+})();
+</script>
 </body>
 </html>
