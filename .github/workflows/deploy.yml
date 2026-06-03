@@ -26,10 +26,10 @@ jobs:
           # Ana hesapla bağlanıyorsan genelde: ./public_html/ veya ./domains/ALANADIN/public_html/
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
           # Siteye ait olmayan dosyaları yüklemiyoruz
-          exclude:
-            - "**/.git*"
-            - "**/.git*/**"
-            - ".github/**"
-            - ".claude/**"
-            - "README.md"
-            - "**/.DS_Store"
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            .claude/**
+            README.md
+            **/.DS_Store
