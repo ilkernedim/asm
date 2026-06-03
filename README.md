@@ -31,3 +31,21 @@ python3 -m http.server 8000
 ```
 
 Tarayıcıdan `http://localhost:8000` adresini açın.
+
+## Telif Hakkı ve Kullanım Koşulları
+
+© 2026 Zerdalitepe Aile Sağlığı Merkezi. Tüm hakları saklıdır.
+
+Bu depodaki tüm içerik (kaynak kod, tasarım, metinler, görseller ve logolar)
+Zerdalitepe Aile Sağlığı Merkezi'ne aittir ve yalnızca bu kuruma ait resmî web
+sitesinin yayını amacıyla kullanılır.
+
+**İzin verilmeyen kullanımlar:** Bu deponun tamamının veya bir kısmının; yazılı
+izin alınmadan kopyalanması, çoğaltılması, dağıtılması, değiştirilmesi, başka bir
+sitede veya projede kullanılması ya da ticari amaçla kullanılması **yasaktır.**
+
+Kod herkese açık (public) olarak yalnızca otomatik yayın (deploy) sürecinin
+çalışabilmesi için görünür durumdadır; bu, içeriğin serbestçe kullanılabileceği
+anlamına gelmez.
+
+İzin ve talepleriniz için: **0312 514 17 10**
