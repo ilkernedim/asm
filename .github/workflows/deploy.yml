@@ -21,6 +21,11 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          # Sunucu şifreli bağlantı (TLS) gerektiriyor — FileZilla gibi
+          protocol: ftps
+          port: 21
+          # Bağlantı için daha uzun süre tanı (yavaş el sıkışmalara karşı)
+          timeout: 60000
           # Dosyaların yükleneceği sunucu klasörü.
           # FTP hesabı doğrudan public_html'e açılıyorsa: ./
           # Ana hesapla bağlanıyorsan genelde: ./public_html/ veya ./domains/ALANADIN/public_html/
