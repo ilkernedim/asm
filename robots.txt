@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /deploy.php
+Disallow: /deploy-test.php
+
+Sitemap: https://zerdalitepeasm.com/sitemap.xml
