@@ -48,4 +48,4 @@ Kod herkese açık (public) olarak yalnızca otomatik yayın (deploy) sürecinin
 çalışabilmesi için görünür durumdadır; bu, içeriğin serbestçe kullanılabileceği
 anlamına gelmez.
 
-İzin ve talepleriniz için: **0312 514 17 10**
+İzin ve talepleriniz için: ilkernedimsaygili@gmail.com
