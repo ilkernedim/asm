@@ -84,7 +84,7 @@
     <header class="header">
       <div class="container">
         <nav class="nav">
-          <button class="mobile-toggle" aria-label="Menü">☰</button>
+          <button class="mobile-toggle" aria-label="Menü" aria-expanded="false">☰<span class="toggle-label">MENÜ</span></button>
           <ul class="nav-list">${renderMenu()}</ul>
         </nav>
       </div>
@@ -156,13 +156,20 @@
   function closeMenu() {
     if (!navList) return;
     navList.classList.remove('open');
+    navList.style.maxHeight = '';
+    navList.querySelectorAll('li.open').forEach(function (li) { li.classList.remove('open'); });
     if (backdrop) backdrop.classList.remove('show');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   }
   function openMenu() {
     if (!navList) return;
     navList.classList.add('open');
+    // The panel hangs off the header, which may sit below the topbar — size it to
+    // whatever viewport is actually left underneath so no item is unreachable.
+    navList.style.maxHeight = Math.max(200, window.innerHeight - navList.getBoundingClientRect().top - 8) + 'px';
     if (backdrop) backdrop.classList.add('show');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   }
 
@@ -174,10 +181,20 @@
   }
   if (backdrop) backdrop.addEventListener('click', closeMenu);
 
-  // Close menu when a real link is clicked (not the parent dropdown toggle)
+  // Close menu when a real link is clicked; dropdown parents expand in place instead
   if (navList) {
     navList.querySelectorAll('a').forEach(function (a) {
-      if (a.getAttribute('href') === '#') return;
+      if (a.getAttribute('href') === '#') {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (window.innerWidth > 880) return;
+          var li = a.parentNode;
+          var wasOpen = li.classList.contains('open');
+          navList.querySelectorAll('li.open').forEach(function (o) { o.classList.remove('open'); });
+          if (!wasOpen) li.classList.add('open');
+        });
+        return;
+      }
       a.addEventListener('click', closeMenu);
     });
   }
@@ -185,6 +202,37 @@
   // Close menu on resize to desktop
   window.addEventListener('resize', function () {
     if (window.innerWidth > 880) closeMenu();
+  });
+
+  // Wrap content tables so they scroll sideways on phones instead of squeezing
+  document.querySelectorAll('.content table').forEach(function (table) {
+    if (table.parentNode.classList.contains('table-wrap')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'table-wrap';
+    table.parentNode.insertBefore(wrap, table);
+    wrap.appendChild(table);
+
+    // Only tables with several columns need to scroll; 2-column ones fit a phone.
+    var firstRow = table.querySelector('tr');
+    var cols = firstRow ? firstRow.querySelectorAll('th, td').length : 0;
+    if (cols >= 3) {
+      wrap.classList.add('is-wide');
+      wrap.style.setProperty('--tbl-min', Math.min(cols * 135, 760) + 'px');
+    }
+
+    var hint = document.createElement('div');
+    hint.className = 'table-scroll-hint';
+    hint.textContent = 'Tabloyu yana kaydırabilirsiniz →';
+    wrap.parentNode.insertBefore(hint, wrap.nextSibling);
+
+    function syncHint() {
+      hint.style.visibility = wrap.scrollWidth > wrap.clientWidth + 2 ? '' : 'hidden';
+    }
+    syncHint();
+    window.addEventListener('resize', syncHint);
+    wrap.addEventListener('scroll', function () {
+      if (wrap.scrollLeft > 8) hint.style.visibility = 'hidden';
+    }, { passive: true });
   });
 
   var yearEl = document.getElementById('year');
